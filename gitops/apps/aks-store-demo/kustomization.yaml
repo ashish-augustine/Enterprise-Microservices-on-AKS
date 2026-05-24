@@ -4,8 +4,10 @@ kind: Kustomization
 resources:
   - https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-all-in-one.yaml
   - service-account.yaml
-  - mongodb.yaml
   - hpa.yaml
+
+patchesStrategicMerge:
+  - mongodb.yaml
 
 patches:
   # 1. Inject Workload Identity into all Deployments
