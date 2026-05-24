@@ -4,7 +4,28 @@ kind: Kustomization
 resources:
   - https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-all-in-one.yaml
   - service-account.yaml
-  - hpa.yaml
+
+# Define the HPA directly in Kustomize
+patchesStrategicMerge:
+  - |-
+    apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: store-front-hpa
+    spec:
+      scaleTargetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: store-front
+      minReplicas: 1
+      maxReplicas: 5
+      metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 50
 
 patches:
   # 1. Inject Workload Identity into all Deployments
