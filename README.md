@@ -23,5 +23,5 @@
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/669a39ad-d6c1-4328-81df-f65802c2c1ee" /> 
 
 ## The Contoso Admin Portal successfully retrieving and displaying order data. This shows that the internal microservices network (store-front -> makeline-service -> mongodb) being fully operational and that the resource optimizations applied to the database layer have resolved the previous connectivity bottlenecks.
-<img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/5b531d92-e6e3-4e18-b9c5-023508ab81df" /> 
+<img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/69ac487b-693f-42d8-b795-c9237e93b7e3" />
 
