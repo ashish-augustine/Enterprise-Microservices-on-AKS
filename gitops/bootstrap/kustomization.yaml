@@ -18,8 +18,8 @@ patches:
         template:
           spec:
             serviceAccountName: workload-sa
-
-  # 2. Fix High Latency: Extreme Probe Thresholds for Free-Tier Compute
+            
+  # 2. Nuclear Option: Disable Probes for Sandbox Environment
   - target:
       kind: StatefulSet
       name: mongodb
@@ -33,16 +33,9 @@ patches:
           spec:
             containers:
               - name: mongodb
-                livenessProbe:
-                  initialDelaySeconds: 120
-                  periodSeconds: 30
-                  timeoutSeconds: 30
-                  failureThreshold: 10
-                readinessProbe:
-                  initialDelaySeconds: 120
-                  periodSeconds: 30
-                  timeoutSeconds: 30
-                  failureThreshold: 10
+                $patch: delete
+                livenessProbe: {}
+                readinessProbe: {}
 
   # 3. Expose Makeline Service to the Internet
   - target:
