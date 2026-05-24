@@ -25,3 +25,10 @@
 ## The Contoso Admin Portal successfully retrieving and displaying order data. This shows that the internal microservices network (store-front -> makeline-service -> mongodb) being fully operational and that the resource optimizations applied to the database layer have resolved the previous connectivity bottlenecks.
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/69ac487b-693f-42d8-b795-c9237e93b7e3" />
 
+
+
+### Validation: Dynamic Scaling Under Load
+
+To verify the resilience of the architecture, a synthetic load test was executed against the frontend service. The screenshot below demonstrates the Horizontal Pod Autoscaler (HPA) actively monitoring the cluster and reacting to the traffic spike.
+ <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/8962141a-69a8-4f5f-8f92-2915afc4d507" /> 
+*Figure: Live terminal output during the stress test. As synthetic HTTP traffic pushed the `store-front` container's CPU utilization to 160% (exceeding the 50% target threshold), the HPA successfully intercepted the metrics and dynamically scaled the deployment from 1 up to 4 replicas to absorb the load.*
