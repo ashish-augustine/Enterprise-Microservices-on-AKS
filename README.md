@@ -22,6 +22,6 @@
 ##  The Contoso Admin Portal UI successfully fetching and displaying pending orders, validating the end-to-end connectivity between the frontend, API, and the stabilized MongoDB instance.
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/669a39ad-d6c1-4328-81df-f65802c2c1ee" /> 
 
-## The Contoso Admin Portal successfully retrieving and displaying order data. This confirms that the internal microservices network (store-front -> makeline-service -> mongodb) is fully operational and that the resource optimizations applied to the database layer have resolved the previous connectivity bottlenecks.
+## The Contoso Admin Portal successfully retrieving and displaying order data. This shows that the internal microservices network (store-front -> makeline-service -> mongodb) being fully operational and that the resource optimizations applied to the database layer have resolved the previous connectivity bottlenecks.
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/5b531d92-e6e3-4e18-b9c5-023508ab81df" /> 
 
