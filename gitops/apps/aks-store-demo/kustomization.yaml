@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# 1. Pull the base application directly from Microsoft's official repository
+resources:
+  - https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-all-in-one.yaml
+  - service-account.yaml
+
+# 2. Enterprise Zero-Trust: Inject the Workload Identity into all Deployments
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: any
+      spec:
+        template:
+          spec:
+            serviceAccountName: workload-sa
