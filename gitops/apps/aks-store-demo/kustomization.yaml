@@ -1,13 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# 1. Pull the base application directly from Microsoft's official repository
 resources:
   - https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-all-in-one.yaml
   - service-account.yaml
 
-# 2. Enterprise Zero-Trust: Inject the Workload Identity into all Deployments
 patches:
+  # 1. Inject Workload Identity into all Deployments
   - target:
       kind: Deployment
     patch: |-
@@ -19,3 +18,22 @@ patches:
         template:
           spec:
             serviceAccountName: workload-sa
+            
+  # 2. Fix Free-Tier Disk Latency by extending the MongoDB Probe Delays
+  - target:
+      kind: StatefulSet
+      name: mongodb
+    patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: mongodb
+      spec:
+        template:
+          spec:
+            containers:
+              - name: mongodb
+                livenessProbe:
+                  initialDelaySeconds: 120
+                readinessProbe:
+                  initialDelaySeconds: 120
