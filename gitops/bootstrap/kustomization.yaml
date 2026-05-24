@@ -1,6 +1,51 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: argocd
+
 resources:
-  - namespace.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-all-in-one.yaml
+  - service-account.yaml
+
+patches:
+  # 1. Inject Workload Identity into all Deployments
+  - target:
+      kind: Deployment
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: any
+      spec:
+        template:
+          spec:
+            serviceAccountName: workload-sa
+            
+  # 2. Fix Free-Tier Disk Latency
+  - target:
+      kind: StatefulSet
+      name: mongodb
+    patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: mongodb
+      spec:
+        template:
+          spec:
+            containers:
+              - name: mongodb
+                livenessProbe:
+                  initialDelaySeconds: 120
+                readinessProbe:
+                  initialDelaySeconds: 120
+
+  # 3. Expose Makeline Service to the Internet
+  - target:
+      kind: Service
+      name: makeline-service
+    patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: makeline-service
+      spec:
+        type: LoadBalancer
