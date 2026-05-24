@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-all-in-one.yaml
   - service-account.yaml
+  - hpa.yaml
 
 patches:
   # 1. Inject Workload Identity into all Deployments
@@ -63,3 +64,25 @@ patches:
         name: makeline-service
       spec:
         type: LoadBalancer
+
+  # 4. Define CPU Requests for Store-Front (Required for HPA)
+  - target:
+      kind: Deployment
+      name: store-front
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: store-front
+      spec:
+        template:
+          spec:
+            containers:
+              - name: store-front
+                resources:
+                  requests:
+                    cpu: "10m"
+                    memory: "32Mi"
+                  limits:
+                    cpu: "50m"
+                    memory: "64Mi"
