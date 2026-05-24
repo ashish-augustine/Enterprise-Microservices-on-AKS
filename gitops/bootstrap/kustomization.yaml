@@ -19,7 +19,7 @@ patches:
           spec:
             serviceAccountName: workload-sa
             
-  # 2. Nuclear Option: Disable Probes for Sandbox Environment
+  # 2. Force-Delete Heavy Probes and Inject Lightweight pgrep Readiness
   - target:
       kind: StatefulSet
       name: mongodb
@@ -33,9 +33,24 @@ patches:
           spec:
             containers:
               - name: mongodb
-                $patch: delete
-                livenessProbe: {}
-                readinessProbe: {}
+                $patch: replace
+                livenessProbe: null
+                readinessProbe:
+                  exec:
+                    command:
+                    - /bin/sh
+                    - -c
+                    - pgrep mongod
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                resources:
+                  requests:
+                    memory: "512Mi"
+                    cpu: "250m"
+                  limits:
+                    memory: "1Gi"
+                    cpu: "500m"
 
   # 3. Expose Makeline Service to the Internet
   - target:
