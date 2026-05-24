@@ -18,8 +18,8 @@ patches:
         template:
           spec:
             serviceAccountName: workload-sa
-            
-  # 2. Fix Free-Tier Disk Latency
+
+  # 2. Fix High Latency: Relax Probe Thresholds
   - target:
       kind: StatefulSet
       name: mongodb
@@ -35,8 +35,14 @@ patches:
               - name: mongodb
                 livenessProbe:
                   initialDelaySeconds: 120
+                  periodSeconds: 20
+                  timeoutSeconds: 10
+                  failureThreshold: 6
                 readinessProbe:
                   initialDelaySeconds: 120
+                  periodSeconds: 20
+                  timeoutSeconds: 10
+                  failureThreshold: 6
 
   # 3. Expose Makeline Service to the Internet
   - target:
