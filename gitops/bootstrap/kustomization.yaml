@@ -19,7 +19,7 @@ patches:
           spec:
             serviceAccountName: workload-sa
 
-  # 2. Fix High Latency: Relax Probe Thresholds
+  # 2. Fix High Latency: Extreme Probe Thresholds for Free-Tier Compute
   - target:
       kind: StatefulSet
       name: mongodb
@@ -35,14 +35,14 @@ patches:
               - name: mongodb
                 livenessProbe:
                   initialDelaySeconds: 120
-                  periodSeconds: 20
-                  timeoutSeconds: 10
-                  failureThreshold: 6
+                  periodSeconds: 30
+                  timeoutSeconds: 30
+                  failureThreshold: 10
                 readinessProbe:
                   initialDelaySeconds: 120
-                  periodSeconds: 20
-                  timeoutSeconds: 10
-                  failureThreshold: 6
+                  periodSeconds: 30
+                  timeoutSeconds: 30
+                  failureThreshold: 10
 
   # 3. Expose Makeline Service to the Internet
   - target:
