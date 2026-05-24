@@ -19,7 +19,7 @@ patches:
           spec:
             serviceAccountName: workload-sa
             
-  # 2. Fix Free-Tier Disk Latency by extending the MongoDB Probe Delays
+  # 2. Fix Free-Tier Disk Latency
   - target:
       kind: StatefulSet
       name: mongodb
@@ -38,20 +38,14 @@ patches:
                 readinessProbe:
                   initialDelaySeconds: 120
 
-  # 3. Explicitly link the Admin Portal to the Makeline API
+  # 3. Expose Makeline Service to the Internet
   - target:
-      kind: Deployment
-      name: store-admin
+      kind: Service
+      name: makeline-service
     patch: |-
-      apiVersion: apps/v1
-      kind: Deployment
+      apiVersion: v1
+      kind: Service
       metadata:
-        name: store-admin
+        name: makeline-service
       spec:
-        template:
-          spec:
-            containers:
-              - name: store-admin
-                env:
-                  - name: VUE_APP_MAKELINE_URL
-                    value: "http://makeline-service:3001"
+        type: LoadBalancer
