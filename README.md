@@ -1,12 +1,33 @@
-# Enterprise-Microservices-on-AKS
+# Enterprise Microservices on AKS via GitOps
 
+## Overview
+This repository demonstrates a production-grade deployment of a polyglot microservices application (Microsoft's AKS Store Demo) utilizing a strict GitOps workflow. The infrastructure is provisioned via Terraform, and application lifecycle management is handled natively by ArgoCD.
 
+## Key Engineering Achievements
 
+### 1. GitOps Continuous Delivery (ArgoCD)
+- Shifted from imperative `kubectl` deployments to declarative, Git-driven state management.
+- Implemented automated, self-healing synchronization to prevent configuration drift and ensure the cluster state perfectly matches the Git repository.
 
+### 2. Advanced Kustomize Overrides
+Rather than forking the upstream repository, Kustomize was used to dynamically patch the remote manifests at deployment time:
+- **StatefulSet Interception:** Overrode the upstream MongoDB StatefulSet to permanently strip out heavy, container-killing `mongo --eval` health probes. This stabilized the database tier and prevented persistent `CrashLoopBackOff` cycles.
+- **Resource Tuning:** Injected custom resource requests and limits (CPU & Memory) into remote base manifests to enable accurate metrics gathering.
+- **Networking & Security:** Patched internal cluster services to expose specific frontends via Azure Load Balancers, and injected Workload Identity service accounts across all deployments.
+
+### 3. Autoscaling & Resilience
+- Deployed a Horizontal Pod Autoscaler (HPA) to dynamically manage application replicas based on real-time compute utilization.
 
  
 
-##  ArgoCD dashboard showing that the cluster state is fully synchronized with the Git repository, demonstrating a successful GitOps workflow.
+
+
+
+
+
+
+
+
  <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/76276142-c46c-46b9-b706-dfdcd7bbc08c" />
 
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/3bf836b7-0314-4a3e-84d1-878ad3dd03fa" />
