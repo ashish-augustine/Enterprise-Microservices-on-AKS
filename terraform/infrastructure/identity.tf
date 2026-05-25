@@ -23,3 +23,4 @@ resource "azurerm_federated_identity_credential" "workload_federation" {
 output "workload_identity_client_id" {
   value = azurerm_user_assigned_identity.workload_identity.client_id
 }
+
