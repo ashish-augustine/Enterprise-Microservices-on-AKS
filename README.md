@@ -6,18 +6,22 @@ This repository demonstrates a production-grade deployment of a polyglot microse
 
 This architecture emphasizes high availability, self-healing configurations, identity-based security, and dynamic autoscaling—aligning with modern Platform Engineering and DevOps best practices.
 
+
 ## Application Interfaces
 The deployed microservices architecture includes a customer-facing frontend and an internal administrative portal, both exposed securely via Azure Load Balancers.
+
 
 ### Store Frontend
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/669a39ad-d6c1-4328-81df-f65802c2c1ee" />
 *Figure 1: The Contoso Pet Store customer-facing web application.*
+
 
 ### Admin Portal
 <img width="1923" height="1124" alt="Image" src="https://github.com/user-attachments/assets/69ac487b-693f-42d8-b795-c9237e93b7e3" />
 *Figure 2: The internal Admin Portal for order management and tracking.*
 
 ---
+
 
 ## Key Engineering Achievements
 
@@ -58,6 +62,7 @@ To verify the resilience of the architecture, a synthetic HTTP load test was exe
 *Figure 7: Live terminal output during the stress test. As synthetic HTTP traffic pushed the `store-front` container's CPU utilization to 160% (exceeding the 50% target threshold), the HPA successfully intercepted the metrics and dynamically scaled the deployment from 1 up to 4 replicas to seamlessly absorb the load.*
 
 ---
+
 
 ## Technologies Used
 * **Cloud Provider:** Microsoft Azure (AKS)
